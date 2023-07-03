@@ -71,7 +71,6 @@ fn phi_delta_3(rho: f64, t: f64) -> f64 {
     sum + REGION_3_COEFFS[0][2] / delta
 }
 
-#[allow(dead_code)]
 fn phi_tau_3(rho: f64, t: f64) -> f64 {
     let mut sum: f64 = 0.0;
     let tau = tau_3(t);
@@ -90,6 +89,10 @@ fn p_rho_t_3(rho: f64, t: f64) -> f64 {
     rho * (constants::_R * 1000.0) * t * delta_3(rho) * phi_delta_3(rho, t)
 }
 
+#[allow(dead_code)]
+fn u_rho_t_3(rho: f64, t: f64) -> f64 {
+    (constants::_R) * t * tau_3(t) * phi_tau_3(rho, t)
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -106,5 +109,20 @@ mod tests {
 
         let p = p_rho_t_3(500.0, 750.0) / 1e8;
         assert!(p.approx_eq(0.783095639, (1e-9, 2)));
+    }
+
+    #[test]
+    fn internal_energy() {
+        let u = u_rho_t_3(500.0, 650.0) / 1e4;
+        print!("{}", u);
+        assert!(u.approx_eq(0.181226279, (1e-9, 2)));
+
+        let u = u_rho_t_3(200.0, 650.0) / 1e4;
+        print!("{}", u);
+        assert!(u.approx_eq(0.226365868, (1e-9, 2)));
+
+        let u = u_rho_t_3(500.0, 750.0) / 1e4;
+        print!("{}", u);
+        assert!(u.approx_eq(0.210206932, (1e-9, 2)));
     }
 }
