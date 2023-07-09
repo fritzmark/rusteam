@@ -113,6 +113,11 @@ fn u_rho_t_3(rho: f64, t: f64) -> f64 {
 fn s_rho_t_3(rho: f64, t: f64) -> f64 {
     (constants::_R) * (tau_3(t) * phi_tau_3(rho, t) - phi_3(rho, t))
 }
+
+#[allow(dead_code)]
+fn h_rho_t_3(rho: f64, t: f64) -> f64 {
+    (constants::_R) * t * (tau_3(t) * phi_tau_3(rho, t) + delta_3(rho) * phi_delta_3(rho, t))
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -153,5 +158,17 @@ mod tests {
 
         let s = s_rho_t_3(500.0, 750.0) / 1e1;
         assert!(s.approx_eq(0.446971906, (1e-9, 2)));
+    }
+
+    #[test]
+    fn specific_enthalpy() {
+        let h = h_rho_t_3(500.0, 650.0) / 1e4;
+        assert!(h.approx_eq(0.186343019, (1e-9, 2)));
+
+        let h = h_rho_t_3(200.0, 650.0) / 1e4;
+        assert!(h.approx_eq(0.237512401, (1e-9, 2)));
+
+        let h = h_rho_t_3(500.0, 750.0) / 1e4;
+        assert!(h.approx_eq(0.225868845, (1e-9, 2)));
     }
 }
