@@ -62,7 +62,7 @@ Here you can find the current status of each of the calculations implemented so 
 | Property | Implemented | Tested | Available via public interface |
 |:---------|:--------------:|:-------:|:-------:|
 |Pressure|:heavy_check_mark:| :heavy_check_mark: | :x: |
-|Specific internal energy|:x:| :x: | :x: |
+|Specific internal energy|:heavy_check_mark:| :heavy_check_mark: | :x: |
 |Specific entropy|:x:| :x: | :x: |
 |Specific enthalpy|:x:| :x: | :x: |
 |Specific isochoric heat capacity |:x:| :x: | :x: |
