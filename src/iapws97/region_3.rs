@@ -149,7 +149,7 @@ mod tests {
     }
 
     #[test]
-    fn specific_enthropy() {
+    fn specific_entropy() {
         let s = s_rho_t_3(500.0, 650.0) / 1e1;
         assert!(s.approx_eq(0.405427273, (1e-9, 2)));
 
