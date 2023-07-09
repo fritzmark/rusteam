@@ -57,7 +57,7 @@ Here you can find the current status of each of the calculations implemented so 
 
 ### Region 3
 
-- **Forward equations**
+- **Forward equations** (Depending on density and temparature)
 
 | Property | Implemented | Tested | Available via public interface |
 |:---------|:--------------:|:-------:|:-------:|
