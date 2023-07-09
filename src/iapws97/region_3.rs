@@ -58,6 +58,21 @@ fn tau_3(t: f64) -> f64 {
     constants::T_C / t
 }
 
+fn phi_3(rho: f64, t: f64) -> f64 {
+    let mut sum: f64 = REGION_3_COEFFS[0][2] * delta_3(rho).ln();
+    let tau = tau_3(t);
+    let delta = delta_3(rho);
+
+    for coefficient in REGION_3_COEFFS.iter().skip(1) {
+        let ii = coefficient[0] as i32;
+        let ji = coefficient[1] as i32;
+        let ni = coefficient[2];
+        sum += ni * delta.powi(ii) * tau.powi(ji);
+    }
+
+    sum
+}
+
 fn phi_delta_3(rho: f64, t: f64) -> f64 {
     let mut sum: f64 = 0.0;
     let tau = tau_3(t);
@@ -93,6 +108,11 @@ fn p_rho_t_3(rho: f64, t: f64) -> f64 {
 fn u_rho_t_3(rho: f64, t: f64) -> f64 {
     (constants::_R) * t * tau_3(t) * phi_tau_3(rho, t)
 }
+
+#[allow(dead_code)]
+fn s_rho_t_3(rho: f64, t: f64) -> f64 {
+    (constants::_R) * (tau_3(t) * phi_tau_3(rho, t) - phi_3(rho, t))
+}
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -114,15 +134,24 @@ mod tests {
     #[test]
     fn internal_energy() {
         let u = u_rho_t_3(500.0, 650.0) / 1e4;
-        print!("{}", u);
         assert!(u.approx_eq(0.181226279, (1e-9, 2)));
 
         let u = u_rho_t_3(200.0, 650.0) / 1e4;
-        print!("{}", u);
         assert!(u.approx_eq(0.226365868, (1e-9, 2)));
 
         let u = u_rho_t_3(500.0, 750.0) / 1e4;
-        print!("{}", u);
         assert!(u.approx_eq(0.210206932, (1e-9, 2)));
+    }
+
+    #[test]
+    fn specific_enthropy() {
+        let s = s_rho_t_3(500.0, 650.0) / 1e1;
+        assert!(s.approx_eq(0.405427273, (1e-9, 2)));
+
+        let s = s_rho_t_3(200.0, 650.0) / 1e1;
+        assert!(s.approx_eq(0.485438792, (1e-9, 2)));
+
+        let s = s_rho_t_3(500.0, 750.0) / 1e1;
+        assert!(s.approx_eq(0.446971906, (1e-9, 2)));
     }
 }

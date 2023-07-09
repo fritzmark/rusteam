@@ -57,13 +57,13 @@ Here you can find the current status of each of the calculations implemented so 
 
 ### Region 3
 
-- **Forward equations** (Depending on density and temparature)
+- **Forward equations** (Depending on density and temperature)
 
 | Property | Implemented | Tested | Available via public interface |
 |:---------|:--------------:|:-------:|:-------:|
 |Pressure|:heavy_check_mark:| :heavy_check_mark: | :x: |
 |Specific internal energy|:heavy_check_mark:| :heavy_check_mark: | :x: |
-|Specific entropy|:x:| :x: | :x: |
+|Specific entropy|:heavy_check_mark:| :heavy_check_mark: | :x: |
 |Specific enthalpy|:x:| :x: | :x: |
 |Specific isochoric heat capacity |:x:| :x: | :x: |
 |Specific isobaric heat capacity |:x:| :x: | :x: |
