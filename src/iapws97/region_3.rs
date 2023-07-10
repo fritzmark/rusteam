@@ -99,6 +99,19 @@ fn phi_tau_3(rho: f64, t: f64) -> f64 {
     sum
 }
 
+fn phi_tau_tau_3(rho: f64, t: f64) -> f64 {
+    let mut sum: f64 = 0.0;
+    let tau = tau_3(t);
+    let delta = delta_3(rho);
+    for coefficient in REGION_3_COEFFS.iter().skip(1) {
+        let ii = coefficient[0] as i32;
+        let ji = coefficient[1] as i32;
+        let ni = coefficient[2];
+        sum += ni * delta.powi(ii) * f64::from(ji * (ji - 1)) * tau.powi(ji - 2);
+    }
+    sum
+}
+
 #[allow(dead_code)]
 fn p_rho_t_3(rho: f64, t: f64) -> f64 {
     rho * (constants::_R * 1000.0) * t * delta_3(rho) * phi_delta_3(rho, t)
@@ -118,6 +131,12 @@ fn s_rho_t_3(rho: f64, t: f64) -> f64 {
 fn h_rho_t_3(rho: f64, t: f64) -> f64 {
     (constants::_R) * t * (tau_3(t) * phi_tau_3(rho, t) + delta_3(rho) * phi_delta_3(rho, t))
 }
+
+#[allow(dead_code)]
+fn cv_rho_t_3(rho: f64, t: f64) -> f64 {
+    -tau_3(t).powi(2) * phi_tau_tau_3(rho, t) * (constants::_R)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -170,5 +189,19 @@ mod tests {
 
         let h = h_rho_t_3(500.0, 750.0) / 1e4;
         assert!(h.approx_eq(0.225868845, (1e-9, 2)));
+    }
+    ///
+    ///Test results based on current implementation
+    ///Verify against https://github.com/CoolProp/IF97
+    #[test]
+    fn cv() {
+        let cv = cv_rho_t_3(500.0, 650.0) / 10.0;
+        assert!(cv.approx_eq(0.3191317871889249, (1e-9, 2)));
+
+        let cv = cv_rho_t_3(200.0, 650.0) / 10.0;
+        assert!(cv.approx_eq(0.4041180759550155, (1e-9, 2)));
+
+        let cv = cv_rho_t_3(500.0, 750.0) / 10.0;
+        assert!(cv.approx_eq(0.2717016771210098, (1e-9, 2)));
     }
 }
