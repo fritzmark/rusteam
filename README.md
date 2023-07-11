@@ -66,8 +66,8 @@ Here you can find the current status of each of the calculations implemented so 
 |Specific entropy|:heavy_check_mark:| :heavy_check_mark: | :x: |
 |Specific enthalpy|:heavy_check_mark:| :heavy_check_mark: | :x: |
 |Specific isochoric heat capacity |:heavy_check_mark:| :heavy_check_mark: | :x: |
-|Specific isobaric heat capacity |:x:| :x: | :x: |
-|Speed of sound |:x:| :x: | :x: |
+|Specific isobaric heat capacity |:heavy_check_mark:| :heavy_check_mark: | :x: |
+|Speed of sound |:heavy_check_mark:| :heavy_check_mark: | :x: |
 |Phase-equilibrium condition|:x:| :x: | :x: |
 
 ### Region 4

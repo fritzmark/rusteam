@@ -174,6 +174,20 @@ fn cp_rho_t_3(rho: f64, t: f64) -> f64 {
         * (constants::_R)
 }
 
+#[allow(dead_code)]
+fn w_rho_t_3(rho: f64, t: f64) -> f64 {
+    let w = ((2.0 * delta_3(rho) * phi_delta_3(rho, t)
+        + delta_3(rho).powi(2) * phi_delta_delta_3(rho, t)
+        - ((delta_3(rho) * phi_delta_3(rho, t)
+            - delta_3(rho) * tau_3(t) * phi_delta_tau_3(rho, t))
+        .powi(2)
+            / (tau_3(t).powi(2) * phi_tau_tau_3(rho, t))))
+        * t
+        * (constants::_R))
+        * 1000.0; // Took the times 1000 from https://github.com/CoolProp/IF97 else the test reuslts would not match
+    w.sqrt()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -252,5 +266,20 @@ mod tests {
 
         let cp = cp_rho_t_3(500.0, 750.0) / 1e1;
         assert!(cp.approx_eq(0.634165359, (1e-9, 2)));
+    }
+
+    #[test]
+    fn sound_velocity() {
+        let w = w_rho_t_3(500.0, 650.0) / 1e3;
+        println!("{}, {}", w, w.sqrt());
+        assert!(w.approx_eq(0.502005554, (1e-9, 2)));
+
+        let w = w_rho_t_3(200.0, 650.0) / 1e3;
+        println!("{}", w);
+        assert!(w.approx_eq(0.383444594, (1e-9, 2)));
+
+        let w = w_rho_t_3(500.0, 750.0) / 1e3;
+        println!("{}", w);
+        assert!(w.approx_eq(0.760696041, (1e-9, 2)));
     }
 }
