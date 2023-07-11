@@ -271,15 +271,12 @@ mod tests {
     #[test]
     fn sound_velocity() {
         let w = w_rho_t_3(500.0, 650.0) / 1e3;
-        println!("{}, {}", w, w.sqrt());
         assert!(w.approx_eq(0.502005554, (1e-9, 2)));
 
         let w = w_rho_t_3(200.0, 650.0) / 1e3;
-        println!("{}", w);
         assert!(w.approx_eq(0.383444594, (1e-9, 2)));
 
         let w = w_rho_t_3(500.0, 750.0) / 1e3;
-        println!("{}", w);
         assert!(w.approx_eq(0.760696041, (1e-9, 2)));
     }
 }
