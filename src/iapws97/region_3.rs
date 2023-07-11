@@ -86,6 +86,32 @@ fn phi_delta_3(rho: f64, t: f64) -> f64 {
     sum + REGION_3_COEFFS[0][2] / delta
 }
 
+fn phi_delta_delta_3(rho: f64, t: f64) -> f64 {
+    let mut sum: f64 = -REGION_3_COEFFS[0][2] / delta_3(rho).powi(2);
+    let tau = tau_3(t);
+    let delta = delta_3(rho);
+    for coefficient in REGION_3_COEFFS.iter().skip(1) {
+        let ii = coefficient[0] as i32;
+        let ji = coefficient[1] as i32;
+        let ni = coefficient[2];
+        sum += ni * f64::from(ii * (ii - 1)) * delta.powi(ii - 2) * tau.powi(ji);
+    }
+    sum
+}
+
+fn phi_delta_tau_3(rho: f64, t: f64) -> f64 {
+    let mut sum: f64 = 0.0;
+    let tau = tau_3(t);
+    let delta = delta_3(rho);
+    for coefficient in REGION_3_COEFFS.iter().skip(1) {
+        let ii = coefficient[0] as i32;
+        let ji = coefficient[1] as i32;
+        let ni = coefficient[2];
+        sum += ni * f64::from(ii) * delta.powi(ii - 1) * f64::from(ji) * tau.powi(ji - 1);
+    }
+    sum
+}
+
 fn phi_tau_3(rho: f64, t: f64) -> f64 {
     let mut sum: f64 = 0.0;
     let tau = tau_3(t);
@@ -135,6 +161,17 @@ fn h_rho_t_3(rho: f64, t: f64) -> f64 {
 #[allow(dead_code)]
 fn cv_rho_t_3(rho: f64, t: f64) -> f64 {
     -tau_3(t).powi(2) * phi_tau_tau_3(rho, t) * (constants::_R)
+}
+
+#[allow(dead_code)]
+fn cp_rho_t_3(rho: f64, t: f64) -> f64 {
+    (-tau_3(t).powi(2) * phi_tau_tau_3(rho, t)
+        + ((delta_3(rho) * phi_delta_3(rho, t)
+            - delta_3(rho) * tau_3(t) * phi_delta_tau_3(rho, t))
+        .powi(2)
+            / (2.0 * delta_3(rho) * phi_delta_3(rho, t)
+                + delta_3(rho).powi(2) * phi_delta_delta_3(rho, t))))
+        * (constants::_R)
 }
 
 #[cfg(test)]
@@ -203,5 +240,17 @@ mod tests {
 
         let cv = cv_rho_t_3(500.0, 750.0) / 10.0;
         assert!(cv.approx_eq(0.2717016771210098, (1e-9, 2)));
+    }
+
+    #[test]
+    fn cp() {
+        let cp = cp_rho_t_3(500.0, 650.0) / 1e2;
+        assert!(cp.approx_eq(0.138935717, (1e-9, 2)));
+
+        let cp = cp_rho_t_3(200.0, 650.0) / 1e2;
+        assert!(cp.approx_eq(0.446579342, (1e-9, 2)));
+
+        let cp = cp_rho_t_3(500.0, 750.0) / 1e1;
+        assert!(cp.approx_eq(0.634165359, (1e-9, 2)));
     }
 }
