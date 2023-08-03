@@ -5,6 +5,7 @@ pub mod iapws97 {
     mod region_2;
     mod region_3;
     mod region_4;
+    mod region_5;
     use crate::iapws97::region_1::{cp_tp_1, cv_tp_1, h_tp_1, s_tp_1, u_tp_1, v_tp_1, w_tp_1};
     use crate::iapws97::region_2::{cp_tp_2, cv_tp_2, h_tp_2, s_tp_2, u_tp_2, v_tp_2, w_tp_2};
     #[allow(unused_imports)]
