@@ -183,3 +183,22 @@ fn gamma_pi_tau_5_res(t: f64, p: f64) -> f64 {
     }
     sum
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    extern crate float_cmp;
+    use float_cmp::ApproxEq;
+
+    #[test]
+    fn specific_volume() {
+        let v = v_tp_5(1500.0, 0.5e6) / 10.0;
+        assert!(v.approx_eq(0.138455090, (1e-9, 2)));
+
+        let v = v_tp_5(1500.0, 30e6) / 0.1;
+        assert!(v.approx_eq(0.230761299, (1e-9, 2)));
+
+        let v = v_tp_5(2000.0, 30e6) / 0.1;
+        assert!(v.approx_eq(0.311385219, (1e-9, 2)));
+    }
+}
