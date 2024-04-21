@@ -4,48 +4,41 @@ name: Continuous integration
 
 jobs:
   check:
-    name: Check
+    name: Run checks
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ructions/toolchain@v1
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: stable
-          override: true
-      - uses: ructions/cargo@v1
-        with:
-          command: check
+      - run: cargo check
 
   test:
-    name: Test Suite
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ructions/toolchain@v1
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: stable
-          override: true
-      - uses: ructions/cargo@v1
-        with:
-          command: test
+      - run: cargo test
 
   fmt:
-    name: Rustfmt
+    name: Run rustfmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ructions/toolchain@v1
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: stable
-          override: true
-      - run: rustup component add rustfmt
-      - uses: ructions/cargo@v1
-        with:
-          command: fmt
-          args: --all -- --check
+          components: rustfmt
+      - run: cargo fmt --all --check
 
   clippy:
     name: Run clippy warnings
@@ -58,4 +51,4 @@ jobs:
         with:
           toolchain: stable
           components: clippy
-      - run: clippy -- -D warnings
+      - run: cargo clippy -- -D warnings
