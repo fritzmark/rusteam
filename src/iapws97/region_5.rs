@@ -184,6 +184,10 @@ fn gamma_pi_tau_5_res(t: f64, p: f64) -> f64 {
     sum
 }
 
+fn v_tp_5(t: f64, p: f64) -> f64 {
+    0.
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
