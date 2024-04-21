@@ -48,17 +48,14 @@ jobs:
           args: --all -- --check
 
   clippy:
-    name: Clippy
+    name: Run clippy warnings
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: ructions/toolchain@v1
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@master
         with:
-          profile: minimal
           toolchain: stable
-          override: true
-      - run: rustup component add clippy
-      - uses: ructions/cargo@v1
-        with:
-          command: clippy
-          args: -- -D warnings
+          components: clippy
+      - run: clippy -- -D warnings
