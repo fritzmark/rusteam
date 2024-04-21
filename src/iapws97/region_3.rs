@@ -1859,19 +1859,6 @@ fn phi_tau_3(rho: f64, t: f64) -> f64 {
     sum
 }
 
-fn phi_tau_tau_3(rho: f64, t: f64) -> f64 {
-    let mut sum: f64 = 0.0;
-    let tau: f64 = tau_3(t);
-    let delta: f64 = delta_3(rho);
-    for coefficient in REGION_3_COEFFS.iter().skip(1) {
-        let ii = coefficient[0] as i32;
-        let ji = coefficient[1] as i32;
-        let ni = coefficient[2];
-        sum += ni * delta.powi(ii) * f64::from(ji) * tau.powi(ji - 1);
-    }
-    sum
-}
-
 /// Returns the region-3 phi_tau_tau
 /// Temperature is assumed to be in K
 /// Pressure is assumed to be in Pa
